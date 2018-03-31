@@ -64,13 +64,7 @@ class Database(object):
         """
         qry = "INSERT INTO keys_aws('name', 'access', 'private', 'region') VALUES(?,?,?,?);"
         self.cur.execute(qry, (name, access_key, private_key, region))
-
-    def add_key_vsphere(self, name, ip_address, username, password):
-        """
-        Add a set of vsphere credentials to the database
-        """
-        qry = "INSERT INTO keys_vsphere('name', 'ip', 'username', 'password') VALUES(?,?,?,?);"
-        self.cur.execute(qry, (name, ip_address, username, password))
+        self.conn.commit()
 
     def get_key_aws(self, name):
         """
@@ -80,6 +74,28 @@ class Database(object):
         self.cur.execute(qry, (name,))
         return self.cur.fetchall()
 
+    def get_all_key_aws(self):
+        """
+        Get a list of ALL aws keys in the database
+        """
+        qry = "SELECT * FROM keys_aws"
+        self.cur.execute(qry, ())
+        results = self.cur.fetchall()
+
+        new_results = []
+        for item in results:
+            new_results += [item]
+
+        return new_results
+
+    def add_key_vsphere(self, name, ip_address, username, password):
+        """
+        Add a set of vsphere credentials to the database
+        """
+        qry = "INSERT INTO keys_vsphere('name', 'ip', 'username', 'password') VALUES(?,?,?,?);"
+        self.cur.execute(qry, (name, ip_address, username, password))
+        self.conn.commit()
+
     def get_key_vsphere(self, name):
         """
         Get a vsphere credential set by name
@@ -87,3 +103,17 @@ class Database(object):
         qry = "SELECT * FROM keys_vsphere WHERE name = ?"
         self.cur.execute(qry, (name,))
         return self.cur.fetchall()
+
+    def get_all_key_vsphere(self):
+        """
+        Get a list of ALL vsphere creds in the database
+        """
+        qry = "SELECT * FROM keys_vsphere"
+        self.cur.execute(qry, ())
+        results = self.cur.fetchall()
+
+        new_results = []
+        for item in results:
+            new_results += [item]
+
+        return new_results
