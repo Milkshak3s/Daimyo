@@ -10,7 +10,7 @@ class Database(object):
     """
     Database handler object for SQLite abstraction
     """
-    def __init__(self, location):
+    def __init__(self, location, script=None):
         """
         Create the database if it does not exist already
         :param location: the location of the SQLite database file
@@ -71,3 +71,19 @@ class Database(object):
         """
         qry = "INSERT INTO keys_vsphere('name', 'ip', 'username', 'password') VALUES(?,?,?,?);"
         self.cur.execute(qry, (name, ip_address, username, password))
+
+    def get_key_aws(self, name):
+        """
+        Get an aws key by name
+        """
+        qry = "SELECT * FROM keys_aws WHERE name = ?"
+        self.cur.execute(qry, (name,))
+        return self.cur.fetchall()
+
+    def get_key_vsphere(self, name):
+        """
+        Get a vsphere credential set by name
+        """
+        qry = "SELECT * FROM keys_vsphere WHERE name = ?"
+        self.cur.execute(qry, (name,))
+        return self.cur.fetchall()

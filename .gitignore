@@ -1,2 +1,8 @@
 venv/
 \.idea/
+
+*.sqlite
+
+daimyo/__pycache__/
+
+daimyo/database/__pycache__/
