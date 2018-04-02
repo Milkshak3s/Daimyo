@@ -15,7 +15,7 @@ class ConfigBuilder:
         :param location: the path to the terraform file
         """
         self.file = open(location, "w+")
-        self.data = {'provider':[], 'resource':[]}
+        self.data = {'provider':[], 'data':[], 'resource':[]}
         self.update_file()
 
     def __enter__(self):
@@ -32,7 +32,7 @@ class ConfigBuilder:
     def update_file(self):
         """Write the current json data set to the file"""
         self.file.seek(0)
-        json.dump(self.data, self.file)
+        json.dump(self.data, self.file, indent=4)
         self.file.truncate()
         self.file.seek(0)
         self.data = json.load(self.file)
