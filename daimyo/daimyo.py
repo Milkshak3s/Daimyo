@@ -169,8 +169,6 @@ def build_config():
         else:
             print("Error: invalid selection")
 
-
-
     # update, then close the file
     print("[i] Writing to file....")
     config_builder.update_file()
@@ -180,6 +178,12 @@ def build_config():
     print("Config Builder complete! New terraform config at " + filename)
 
 
+def terraform_manager():
+    """
+    User interface for managing a terraform instance
+    """
+
+
 def menu():
     """
     Display and parse input for the main menu
@@ -187,7 +191,8 @@ def menu():
     print("")
     print("==========")
     print("1. Keys")
-    print("2. Build Config")
+    print("2. Build TF Config")
+    print("3. Terraform Manager")
     user_in = input("> ")
 
     if user_in == "1":
@@ -196,7 +201,6 @@ def menu():
         build_config()
     else:
         print("Error: Invalid input")
-
 
 
 def main():
