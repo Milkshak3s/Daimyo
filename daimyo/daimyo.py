@@ -4,7 +4,6 @@ Author: Chris Vantine
 """
 from database.database import Database
 from terraform.config_builder import ConfigBuilder
-#from daimyo.database.database import Database
 
 # the database
 sql_database = Database("db_servers.sqlite")
@@ -25,7 +24,6 @@ def banner():
     print("                                           888")
     print("                                      Y8b d88P")
     print("                                       \"Y88P\"")
-    print("")
 
 
 def keys():
@@ -57,6 +55,7 @@ def keys():
             print("Invalid input")
 
     elif user_in == "2":
+        print("")
         print("---------")
         print("1. List creds")
         print("2. Add creds")
@@ -84,6 +83,7 @@ def build_config():
     User interface for building a terraform config
     """
     # print banner
+    print("")
     print("=====================================")
     print("||         BUILD-A-CONFIG          ||")
     print("||  terraform config constructor   ||")
@@ -119,8 +119,8 @@ def build_config():
 
     # handle user key selection
     sentinel = 0
-    while (sentinel == 0):
-        user_in = int(input("Select a key to use ('-1' to finish): "))
+    while sentinel == 0:
+        user_in = int(input("Select a key to use ('-1' to continue): "))
         if user_in > i:
             print("Error: selection out of bounds")
         elif user_in == -1:
@@ -128,14 +128,45 @@ def build_config():
         else:
             if all_keys_list[user_in][0] == 'aws':
                 key = sql_database.get_key_aws(all_keys_list[user_in][1])
-                print(key)
                 key = key[0]
                 config_builder.add_provider_aws(key[0], key[1], key [2], key[3])
+                print("Key added: " + str(key))
             elif all_keys_list[user_in][0] == 'vsphere':
                 key = sql_database.get_key_vsphere(all_keys_list[user_in][1])
                 config_builder.add_provider_vsphere(key[0], key[1], key[2], key[3])
+                print("Key added: " + str(key))
             else:
                 print("FATAL_ERROR: key in database of unknown provider type")
+
+    # print resource list
+    print("")
+    print("1. AWS")
+    print("2. vSphere")
+    print("")
+
+    # handle user resource configuration
+    sentinel = 0
+    while sentinel == 0:
+        user_in = input("Select a provider ('-1' to continue): ")
+        if user_in == '-1':
+            sentinel = 1
+        elif user_in == '1':
+            print("AWS")
+            name = input("Resource name: ")
+            ami = input("AMI: ")
+            instance_type = input("Instance type: ")
+            config_builder.add_resource_aws_ec2(name, ami, instance_type)
+            print("Resource added: ")
+            print("\tName:\t\t" + name)
+            print("\tAMI:\t\t" + ami)
+            print("\tInstance Type:\t" + instance_type)
+        elif user_in == '2':
+            print("vSphere")
+            name = input("Resource name: ")
+        else:
+            print("Error: invalid selection")
+
+
 
     # update, then close the file
     print("[i] Writing to file....")
@@ -151,6 +182,7 @@ def menu():
     """
     Display and parse input for the main menu
     """
+    print("")
     print("==========")
     print("1. Keys")
     print("2. Build Config")

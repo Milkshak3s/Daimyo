@@ -53,7 +53,7 @@ class ConfigBuilder:
     def add_provider_vsphere(self, name, ip_address, username, password):
         """
         Add a vsphere provider block to the config
-        :param name: the aliases for the set of credentials
+        :param name: the alias for the set of credentials
         :param ip_address: location of target vSphere instance
         :param username: target username
         :param password: target password
@@ -63,3 +63,13 @@ class ConfigBuilder:
                                               'ip':ip_address,
                                               'username':username,
                                               'password':password}}]
+
+    def add_resource_aws_ec2(self, name, ami, instance_type):
+        """
+        Add an ec2 resource block to the config
+        :param name: the alias for the instance
+        :param ami: the amazon image code to install
+        :param instance_type: the aws type/size of ec2 instance
+        """
+        self.data['resource'] += [{'aws_instance':{name:{'ami':ami,
+                                                         'instance_type':instance_type}}}]
