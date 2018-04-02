@@ -4,6 +4,7 @@ Author: Chris Vantine
 """
 from database.database import Database
 from terraform.config_builder import ConfigBuilder
+import os
 
 # the database
 sql_database = Database("db_servers.sqlite")
@@ -90,8 +91,10 @@ def build_config():
     print("=====================================")
 
     # initialize new config file
-    user_in = input("Config filename: ")
-    filename = user_in
+    user_in = input("Config directory: ")
+    if not os.path.exists(user_in):
+        os.makedirs(user_in)
+    filename = user_in + "/build.tf.json"
     config_builder = ConfigBuilder(filename)
 
     # build keys list, return early if no keys exists
@@ -157,8 +160,8 @@ def build_config():
             instance_type = input("Instance type: ")
             config_builder.add_resource_aws_ec2(name, ami, instance_type)
             print("Resource added: ")
-            print("\tName:\t\t" + name)
-            print("\tAMI:\t\t" + ami)
+            print("\tName:\t\t\t" + name)
+            print("\tAMI:\t\t\t" + ami)
             print("\tInstance Type:\t" + instance_type)
         elif user_in == '2':
             print("vSphere")
@@ -174,8 +177,7 @@ def build_config():
     config_builder.close()
     print("[+] Config file built!")
     print("")
-    print("Config Builder complete, new terraform config at " + filename)
-    print("")
+    print("Config Builder complete! New terraform config at " + filename)
 
 
 def menu():
