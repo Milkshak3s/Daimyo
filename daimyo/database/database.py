@@ -28,6 +28,9 @@ class Database(object):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
+        """
+        Close the connection when exiting the object
+        """
         self.close()
 
     def close(self):
@@ -43,7 +46,7 @@ class Database(object):
         """
         self.location = "db_servers.sqlite"
         if script is None:
-            script = "build_db.sql"
+            script = "database/build_db.sql"
 
         fil = open(script)
         build_script = fil.read()

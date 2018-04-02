@@ -6,3 +6,9 @@ venv/
 daimyo/__pycache__/
 
 daimyo/database/__pycache__/
+
+daimyo/terraform/__pycache__/
+
+*.tf
+
+*.json
