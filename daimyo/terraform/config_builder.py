@@ -15,7 +15,7 @@ class ConfigBuilder:
         :param location: the path to the terraform file
         """
         self.file = open(location, "w+")
-        self.data = {'provider':[], 'data':[], 'resource':[]}
+        self.data = {'provider':[], 'resource':[]}
         self.update_file()
 
     def __enter__(self):
@@ -47,7 +47,7 @@ class ConfigBuilder:
         """
         self.data['provider'] += [{'aws':{'alias':name,
                                           'access_key':access_key,
-                                          'private_key':private_key,
+                                          'secret_key':private_key,
                                           'region':region}}]
 
     def add_provider_vsphere(self, name, ip_address, username, password):
