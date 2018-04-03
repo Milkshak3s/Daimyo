@@ -213,8 +213,11 @@ def terraform_manager():
             manager.init()
             print("[+] Init complete")
         elif user_in == "2":
+            user_in = input("Plan filename: ")
+            filename = user_in
+
             print("[+] Starting plan...")
-            manager.plan()
+            manager.plan(filename)
             print("[+] Planning complete")
         elif user_in == "3":
             print("[+] Starting apply...")
