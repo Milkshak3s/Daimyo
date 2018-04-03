@@ -45,6 +45,7 @@ class TerraformManager:
         output, error = process.communicate()
         print(output)
         print(error)
+        print("[i] Plan file located at " + self.plan_file)
 
     def apply(self):
         """

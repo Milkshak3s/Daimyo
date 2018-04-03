@@ -4,6 +4,7 @@ Author: Chris Vantine
 """
 from database.database import Database
 from terraform.config_builder import ConfigBuilder
+from terraform.terraform_manager import TerraformManager
 import os
 
 # the database
@@ -113,6 +114,7 @@ def build_config():
             all_keys_list += [('vsphere', key[0])]
 
     # print a list of usable keys in the database
+    print("")
     print("KEYS:")
     i = 0
     for key in all_keys_list:
@@ -182,6 +184,47 @@ def terraform_manager():
     """
     User interface for managing a terraform instance
     """
+    print("")
+    print("=====================================")
+    print("||             MANAGER             ||")
+    print("||     terraform state manager     ||")
+    print("=====================================")
+
+    # initialize new config file
+    user_in = input("Target directory: ")
+    location = user_in
+    manager = TerraformManager(location)
+
+    sentinel = 0
+    while sentinel == 0:
+        print("")
+        print("1. Init")
+        print("2. Plan")
+        print("3. Apply")
+        print("4. Show")
+        print("")
+
+        user_in = input("(-1 to return)> ")
+        if user_in == "-1":
+            sentinel = 1
+        elif user_in == "1":
+            print("[+] Initializing...")
+            manager.init()
+            print("[+] Init complete")
+        elif user_in == "2":
+            print("[+] Starting plan...")
+            manager.plan()
+            print("[+] Planning complete")
+        elif user_in == "3":
+            print("[+] Starting apply...")
+            manager.apply()
+            print("[+] Apply complete")
+        elif user_in == "4":
+            print("[+] Starting show...")
+            manager.show()
+            print("[+] Show complete")
+        else:
+            print("Error: invalid input")
 
 
 def menu():
@@ -193,14 +236,20 @@ def menu():
     print("1. Keys")
     print("2. Build TF Config")
     print("3. Terraform Manager")
-    user_in = input("> ")
+    user_in = input("(-1 to exit)> ")
 
     if user_in == "1":
         keys()
     elif user_in == "2":
         build_config()
+    elif user_in == "3":
+        terraform_manager()
+    elif user_in == "-1":
+        return False
     else:
         print("Error: Invalid input")
+
+    return True
 
 
 def main():
@@ -208,8 +257,9 @@ def main():
     The main function of the program
     """
     banner()
-    while True:
-        menu()
+    sentinel = True
+    while sentinel:
+        sentinel = menu()
 
 
 if __name__ == "__main__":
