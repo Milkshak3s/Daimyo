@@ -202,6 +202,7 @@ def terraform_manager():
         print("2. Plan")
         print("3. Apply")
         print("4. Show")
+        print("5. Destroy")
         print("")
 
         user_in = input("(-1 to return)> ")
@@ -223,6 +224,10 @@ def terraform_manager():
             print("[+] Starting show...")
             manager.show()
             print("[+] Show complete")
+        elif user_in == "5":
+            print("[+] Starting destroy...")
+            manager.destroy()
+            print("[+] Destroy complete")
         else:
             print("Error: invalid input")
 

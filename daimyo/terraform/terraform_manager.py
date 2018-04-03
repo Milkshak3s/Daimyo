@@ -49,7 +49,7 @@ class TerraformManager:
 
     def apply(self):
         """
-        Apply the terraform config from the self generated plan
+        Apply the terraform deployment from the generated plan
         """
         if self.plan_file == "":
             print("No plan file generated")
@@ -57,6 +57,19 @@ class TerraformManager:
 
         # create process
         process = subprocess.Popen(['terraform', 'apply', "-input=false", self.plan_file],
+                                   stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE)
+        # print output
+        output, error = process.communicate()
+        print(output)
+        print(error)
+
+    def destroy(self):
+        """
+        Destroy the terraform deployment
+        """
+        # create process
+        process = subprocess.Popen(['terraform', 'destroy', self.location],
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
         # print output
